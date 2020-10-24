@@ -1,7 +1,5 @@
 package com.deserve.models.impl;
 
-import static org.junit.Assert.*;
-
 import org.junit.Assert;
 import org.junit.Test;
 

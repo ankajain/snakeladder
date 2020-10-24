@@ -8,7 +8,6 @@ import java.util.Queue;
 
 import com.deserve.exception.GameOverException;
 import com.deserve.exception.InvalidPlayerException;
-import com.deserve.models.Board;
 import com.deserve.models.Dice;
 import com.deserve.models.GameObject;
 import com.deserve.models.Player;

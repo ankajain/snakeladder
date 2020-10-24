@@ -85,9 +85,7 @@ public class GameTest {
             public int roll() {
                 return 20;
             }
-        }, List.of(new Snake(20, 7), new Ladder(40, 27),
-                new Snake(60, 50), new Snake(90, 80)),
-                List.of(p, p2));
+        }, List.of(new Snake(20, 7), new Ladder(40, 27), new Snake(60, 50), new Snake(90, 80)), List.of(p, p2));
         game.play(game.getNextPlayer());
         game.play(game.getNextPlayer());
         game.play(game.getNextPlayer());
