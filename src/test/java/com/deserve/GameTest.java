@@ -9,6 +9,7 @@ import com.deserve.exception.InvalidPlayerException;
 import com.deserve.models.Dice;
 import com.deserve.models.GameObject;
 import com.deserve.models.Player;
+import com.deserve.models.impl.CrookedDice;
 import com.deserve.models.impl.Snake;
 
 public class GameTest {
@@ -34,6 +35,7 @@ public class GameTest {
         final Player p = new Player("Akanksha");
         final GameObject snake = new Snake(14, 7);
         final Game game = new Game(100, new Dice() {
+
             @Override
             public int roll() {
                 return 13;
@@ -41,5 +43,13 @@ public class GameTest {
         }, List.of(snake), List.of(p));
         game.play(p);
         Assert.assertNotEquals("Player should be at 13th Position after Start ", 13, p.getPosition());
+    }
+
+    @Test
+    public void test_with_crooked_dice() {
+        final Player p = new Player("Akanksha");
+        final Game game = new Game(100, new CrookedDice(), List.of(new Snake(14, 7)), List.of(p));
+        game.play(p);
+        Assert.assertEquals("As initial position is 1 so crooked dice will put player to all odd position", 1, p.getPosition() % 2);
     }
 }
