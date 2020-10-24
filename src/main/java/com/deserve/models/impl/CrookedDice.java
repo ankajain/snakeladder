@@ -2,9 +2,9 @@ package com.deserve.models.impl;
 
 import com.deserve.models.Dice;
 
-public class CrookedDice implements Dice {
+public class CrookedDice extends Dice {
 
     public int roll() {
-        return 0;
+        return (random.nextInt(3) + 1) * 2;
     }
 }

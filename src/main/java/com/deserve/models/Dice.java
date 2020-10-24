@@ -1,6 +1,10 @@
 package com.deserve.models;
 
-public interface Dice {
+import java.util.Random;
 
-    int roll();
+public abstract class Dice {
+
+    public final Random random = new Random();
+
+    public abstract int roll();
 }
