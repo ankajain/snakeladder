@@ -1,9 +1,12 @@
 package com.deserve;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Queue;
 
+import com.deserve.exception.GameOverException;
 import com.deserve.exception.InvalidPlayerException;
 import com.deserve.models.Board;
 import com.deserve.models.Dice;
@@ -14,10 +17,9 @@ import com.deserve.models.impl.NormalDice;
 public class Game {
 
     private final int boardSize;
-    private final Board board;
     private final List<GameObject> gameObjects;
     private final Dice dice;
-    private final List<Player> players;
+    private final Queue<Player> players;
 
     public Game(
         final int boardSize,
@@ -38,10 +40,9 @@ public class Game {
         final List<GameObject> gamesObjects,
         final List<Player> playerList) {
         this.boardSize = boardSize;
-        this.board = new Board(boardSize);
         this.gameObjects = gamesObjects;
         this.dice = dice;
-        this.players = playerList;
+        this.players = new ArrayDeque<>(playerList);
     }
 
     public void play(
@@ -59,8 +60,10 @@ public class Game {
     private void moveToNextLocation(
         final Player player,
         final int newPosition) {
-        if (checkPositionValidToPlay(newPosition))
+        if (player.getPosition() <= 100) {
             player.setPosition(newPosition);
+            updateGameStatus(player);
+        }
     }
 
     private Integer getNextPositionAfterCheckingWithGamesObjects(
@@ -75,5 +78,21 @@ public class Game {
     private boolean checkPositionValidToPlay(
         final int position) {
         return position < this.boardSize;
+    }
+
+    private void updateGameStatus(
+        final Player player) {
+        if (player.getPosition() == 100) {
+            players.poll();
+            if (players.size() <= 1)
+                throw new GameOverException("Game over");
+        } else {
+            players.poll();
+            players.offer(player);
+        }
+    }
+
+    public Player getNextPlayer() {
+        return players.peek();
     }
 }

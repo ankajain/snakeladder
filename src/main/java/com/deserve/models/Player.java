@@ -10,7 +10,7 @@ public class Player {
     public Player(
         final String name) {
         this.name = name;
-        this.position = 1;
+        this.position = 0;
     }
 
     @Override
