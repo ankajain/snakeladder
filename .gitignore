@@ -26,3 +26,6 @@ hs_err_pid*
 #Intellij Files
 *.idea/
 *.iml
+src/main/resources/
+target/generated-sources/
+target/generated-test-sources/
