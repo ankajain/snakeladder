@@ -11,7 +11,7 @@ import com.deserve.models.impl.Ladder;
 import com.deserve.models.impl.NormalDice;
 import com.deserve.models.impl.Snake;
 
-public class Main {
+public class A {
 
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -39,32 +39,33 @@ public class Main {
 
         System.out.println("Enter Board Size");
         final int boardSize = scanner.nextInt();
-        System.out.println("Enter Dice Type");
-        final int diceChoice = diceMenu();
-        Dice dice = null;
-        switch (diceChoice) {
-            case 1:
-                dice = new NormalDice();
-                break;
-            case 2:
-                dice = new CrookedDice();
-                break;
+        System.out.println("Do you want to choose Dice Type Y/N");
+        final String diceTypeChoice = scanner.nextLine();
+        Dice dice = new NormalDice();
+        if(diceTypeChoice == "Y") {
+            System.out.println("Enter Dice Type");
+            final int diceChoice = diceMenu();
+            switch (diceChoice) {
+                case 2:
+                    dice = new CrookedDice();
+                    break;
+            }
         }
         int choice;
         final List<GameObject> gameObjectList = new ArrayList<GameObject>();
-        while ((choice = Main.MenuList()) != 3) {
-            if (Main.MenuList() == 1)
+        while ((choice = A.MenuList()) != 3) {
+            if (A.MenuList() == 1)
                 gameObjectList.add(new Snake(acceptPosition("Enter head Position"), acceptPosition("Enter Tail Position")));
-            else if (Main.MenuList() == 2)
+            else if (A.MenuList() == 2)
                 gameObjectList.add(new Ladder(acceptPosition("Enter head Position"), acceptPosition("Enter Tail Position")));
-            else if (Main.MenuList() == 3)
+            else if (A.MenuList() == 3)
                 break;
         }
         Game game;
 
         if (choice == 3) {
             game = new Game(boardSize, dice, gameObjectList);
-            game.play();
+//            game.play();
         }
 
     }
