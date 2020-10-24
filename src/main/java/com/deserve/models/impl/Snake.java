@@ -2,20 +2,20 @@ package com.deserve.models.impl;
 
 import com.deserve.models.GameObject;
 
-public class Snake implements GameObject {
-
-    private final int headPosition;
-    private final int tailPosition;
+public class Snake extends GameObject {
 
     public Snake(
         final int headPosition,
         final int tailPosition) {
-        this.headPosition = headPosition;
-        this.tailPosition = tailPosition;
+        super(headPosition, tailPosition);
     }
 
     @Override
-    public int behave() {
-        return 0;
+    public int checkPosition(
+        final int position) {
+        if (position == headPosition)
+            return tailPosition;
+        else
+            return position;
     }
 }

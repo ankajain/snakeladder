@@ -2,6 +2,7 @@ package com.deserve;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.deserve.exception.InvalidPlayerException;
 import com.deserve.models.Board;
@@ -12,51 +13,63 @@ import com.deserve.models.impl.NormalDice;
 
 public class Game {
 
-    private final Board board;
     private final int boardSize;
+    private final Board board;
     private final List<GameObject> gameObjects;
     private final Dice dice;
-    private List<Player> players;
+    private final List<Player> players;
 
     public Game(
         final int boardSize,
         final Dice dice) {
-        board = new Board(boardSize);
-        this.dice = dice;
-        gameObjects = new ArrayList<>();
-        this.boardSize = boardSize;
+        this(boardSize, dice, new ArrayList<>(), new ArrayList<>());
+
     }
 
     public Game(
         final int boardSize,
         final List<Player> playerList) {
-        board = new Board(boardSize);
-        this.dice = new NormalDice();
-        gameObjects = new ArrayList<>();
-        this.players = playerList;
-        this.boardSize = boardSize;
+        this(boardSize, new NormalDice(), new ArrayList<>(), playerList);
     }
 
     public Game(
         final int boardSize,
         final Dice dice,
-        final List<GameObject> gamesObjects) {
-        board = new Board(boardSize);
+        final List<GameObject> gamesObjects,
+        final List<Player> playerList) {
+        this.boardSize = boardSize;
+        this.board = new Board(boardSize);
         this.gameObjects = gamesObjects;
         this.dice = dice;
-        this.boardSize = boardSize;
+        this.players = playerList;
     }
 
     public void play(
         final Player player) {
         if (checkPositionValidToPlay(player.getPosition())) {
             final int newNo = dice.roll();
-            final int newPosition = player.getPosition() + newNo;
-            if (checkPositionValidToPlay(newPosition))
-                player.setPosition(newPosition);
+            Integer newPosition = player.getPosition() + newNo;
+            newPosition = getNextPositionAfterCheckingWithGamesObjects(newPosition);
+            moveToNextLocation(player, newPosition);
         } else {
             throw new InvalidPlayerException(player.getName() + " already won the game.");
         }
+    }
+
+    private void moveToNextLocation(
+        final Player player,
+        final int newPosition) {
+        if (checkPositionValidToPlay(newPosition))
+            player.setPosition(newPosition);
+    }
+
+    private Integer getNextPositionAfterCheckingWithGamesObjects(
+        final Integer newPosition) {
+        final Optional<GameObject> gameObjectOptional = gameObjects.parallelStream()
+            .filter(gameObject -> gameObject.getHeadPosition() == newPosition || gameObject.getTailPosition() == newPosition)
+            .findFirst();
+        return gameObjectOptional.map(gameObject -> gameObject.checkPosition(newPosition))
+            .orElse(newPosition);
     }
 
     private boolean checkPositionValidToPlay(
