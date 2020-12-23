@@ -42,7 +42,7 @@ public class A {
         System.out.println("Do you want to choose Dice Type Y/N");
         final String diceTypeChoice = scanner.nextLine();
         Dice dice = new NormalDice();
-        if(diceTypeChoice == "Y") {
+        if (diceTypeChoice == "Y") {
             System.out.println("Enter Dice Type");
             final int diceChoice = diceMenu();
             switch (diceChoice) {
@@ -64,8 +64,8 @@ public class A {
         Game game;
 
         if (choice == 3) {
-            game = new Game(boardSize, dice, gameObjectList);
-//            game.play();
+            // game = new Game(boardSize, dice, gameObjectList);
+            // game.play();
         }
 
     }
